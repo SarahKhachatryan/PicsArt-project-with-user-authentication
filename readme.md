@@ -35,3 +35,9 @@
 3.Update Password (PUT) -/api/v1/users/updatePassowrd
 4.Search users by name (PUT) - /api/v1/users/:name
 ```
+
+##Links 
+
+```
+https://learning.oreilly.com/videos/node-js-api-masterclass/9781800569638
+```
