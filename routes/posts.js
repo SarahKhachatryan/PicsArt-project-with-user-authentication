@@ -11,7 +11,8 @@ const{
     getPhoto,
     searchByDescription,
     deletePhoto,
-    updatePhoto
+    updatePhoto,
+    getRecentPosts
 } = require('../controllers/posts');
 
 router
@@ -23,18 +24,18 @@ router.delete('/:id/:fileName',protect,deletePhoto);
 router.put('/:id/:fileName',protect,updatePhoto);
 
 router
-
     .route('/:id')
     .put(protect,editPost)
     .delete(protect,deletePost)
     .get(protect,getPost);
 
-router.route('/:desc')
+router.route('/search/:desc')
     .get(searchByDescription);
 
 router.route('/:id/photo')
     .post(protect,addPhotoToPost)
     .get(protect,getPhoto);
 
+router.get('/recent/:num',getRecentPosts)
 
 module.exports = router;

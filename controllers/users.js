@@ -56,3 +56,15 @@ exports.updatePassword = async (req, res, next) => {
     }
 }
 
+/**Search other users by their name*/
+exports.searchUsers = async (req, res, next) => {
+    try {
+        const users =await  User.find({name: req.params.name});
+        res.status(200).json({success: true, data: users});
+
+    } catch (err) {
+        res.status(404).json({success: false, msg: err.message});
+
+    }
+}
+

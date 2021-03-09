@@ -8,8 +8,6 @@ const app = express();
 /**Load environmental variables.*/
 dotenv.config({path: './config/config.env'});
 
-/**Cookie parser*/
-app.use(cookieParser);
 
 /**File uploading*/
 app.use(fileUpload());

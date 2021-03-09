@@ -17,13 +17,13 @@ exports.createPost = async (req, res, next) => {
     try {
         //add user to req.body
         req.body.user = req.user.id;
+        console.log(req.body);
         const post = await Post.create(req.body);
         res.status(201).json({success: true, data: post});
 
     } catch (err) {
         res.status(500).json({success: false, msg: err.message});
     }
-
 }
 /**Update post*/
 exports.editPost = async (req, res, next) => {
@@ -92,12 +92,20 @@ exports.getPhoto = async (req, res, next) => {
 /**Search post by description*/
 exports.searchByDescription = async (req, res, next) => {
     try {
-        const post = await Post.find({description: req.params.desc});
-        res.status(200).json({success: true, data: post});
+        const posts = await Post.find();
+        const arr = [];
+        for (let i = 0; i < posts.length; i++) {
+            if (typeof (posts[i].description) !== 'undefined') {
+                if (posts[i].description.includes(req.params.desc)) {
+                    arr.push(posts[i]);
+                }
+            }
+        }
+
+        res.status(200).json({success: true, data: arr});
     } catch (err) {
         res.status(404).json({success: false, msg: err.message});
     }
-    res.status(200).json({success: true, msg: 'Post found'});
 }
 
 /** Get post by id*/
@@ -159,3 +167,16 @@ exports.deletePhoto = async (req, res, next) => {
     }
 }
 
+/**Get recent posts*/
+exports.getRecentPosts = async (req, res)=>{
+
+    try{
+        const posts = await Post.find();
+        const arr = posts.splice(posts.length-req.params.num).reverse();
+        res.status(200).json({success: true, data: arr});
+
+    }catch(err){
+        res.status(404).json({success: false, msg: err.message});
+
+    }
+}
