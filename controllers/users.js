@@ -3,7 +3,7 @@ const Post = require('../models/Post');
 
 
 /**Get user's all posts*/
-exports.getPosts = async (req, res, next) => {
+exports.getPosts = async (req, res) => {
     try {
         const posts = await Post.find({user: req.user.id}).exec();
         console.log(posts);
@@ -15,7 +15,7 @@ exports.getPosts = async (req, res, next) => {
 
 /**Update user*/
 
-exports.updateUser = async (req, res, next) => {
+exports.updateUser = async (req, res) => {
     try {
         const fieldsToUpdate = {
             name: req.body.name,
@@ -37,7 +37,7 @@ exports.updateUser = async (req, res, next) => {
 }
 
 /**Update password*/
-exports.updatePassword = async (req, res, next) => {
+exports.updatePassword = async (req, res) => {
     try {
         const myUser = await User.findById(req.user.id).select('+password');
 
@@ -57,13 +57,13 @@ exports.updatePassword = async (req, res, next) => {
 }
 
 /**Search other users by their name*/
-exports.searchUsers = async (req, res, next) => {
+exports.searchUsers = async (req, res) => {
     try {
         const users =await  User.find({name: req.params.name});
         res.status(200).json({success: true, data: users});
 
     } catch (err) {
-        res.status(404).json({success: false, msg: err.message});
+        res.status(500).json({success: false, msg: err.message});
 
     }
 }

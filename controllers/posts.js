@@ -1,9 +1,9 @@
-const Post = require('../models/Post');
 const path = require('path');
 const fs = require('fs');
+const Post = require('../models/Post');
 
 /** Get all posts*/
-exports.getPosts = async (req, res, next) => {
+exports.getPosts = async (req, res) => {
     try {
         const posts = await Post.find();
         res.status(201).json({success: true, data: posts});
@@ -13,7 +13,7 @@ exports.getPosts = async (req, res, next) => {
 }
 
 /**Create a post*/
-exports.createPost = async (req, res, next) => {
+exports.createPost = async (req, res) => {
     try {
         //add user to req.body
         req.body.user = req.user.id;
@@ -26,7 +26,7 @@ exports.createPost = async (req, res, next) => {
     }
 }
 /**Update post*/
-exports.editPost = async (req, res, next) => {
+exports.editPost = async (req, res) => {
     try {
         const post = await Post.findByIdAndUpdate(req.params.id, req.body,
             {
@@ -38,12 +38,9 @@ exports.editPost = async (req, res, next) => {
         res.status(500).json({success: false, msg: err.message});
     }
 }
-/**Update Post's Photo*/
-exports.updatePhoto = async (req, res, next) => {
 
-}
 /**Delete post*/
-exports.deletePost = async (req, res, next) => {
+exports.deletePost = async (req, res) => {
     try {
         const post = await Post.findByIdAndDelete(req.params.id);
         res.status(200).json({success: true, msg: 'Post deleted.'});
@@ -52,7 +49,7 @@ exports.deletePost = async (req, res, next) => {
     }
 }
 /**Add photo*/
-exports.addPhotoToPost = async (req, res, next) => {
+exports.addPhotoToPost = async (req, res) => {
 
     try {
         const post = await Post.findById(req.params.id);
@@ -66,7 +63,6 @@ exports.addPhotoToPost = async (req, res, next) => {
         if (!file.mimetype.startsWith('image')) {
             res.status(400).json({success: false, msg: 'Please upload an image file.'})
         }
-        // file.name = `photo_${post._id}${path.parse(file.name).ext}`;
 
         file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
             const arr = post.photo;
@@ -80,7 +76,7 @@ exports.addPhotoToPost = async (req, res, next) => {
 }
 
 /**Get post's photos*/
-exports.getPhoto = async (req, res, next) => {
+exports.getPhoto = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         res.status(200).json(post.photo);
@@ -90,7 +86,7 @@ exports.getPhoto = async (req, res, next) => {
 }
 
 /**Search post by description*/
-exports.searchByDescription = async (req, res, next) => {
+exports.searchByDescription = async (req, res) => {
     try {
         const posts = await Post.find();
         const arr = [];
@@ -109,7 +105,7 @@ exports.searchByDescription = async (req, res, next) => {
 }
 
 /** Get post by id*/
-exports.getPost = async (req, res, next) => {
+exports.getPost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         res.status(200).json({success: true, data: post});
@@ -118,7 +114,7 @@ exports.getPost = async (req, res, next) => {
     }
 }
 /**Get post's photos*/
-exports.getPhoto = async (req, res, next) => {
+exports.getPhoto = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         res.status(200).json({success: true, data: post.photo});
@@ -128,7 +124,7 @@ exports.getPhoto = async (req, res, next) => {
 }
 
 /**Update photo*/
-exports.updatePhoto = async (req, res, next) => {
+exports.updatePhoto = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         const photoName = req.params.fileName;
@@ -150,7 +146,7 @@ exports.updatePhoto = async (req, res, next) => {
 }
 
 /**Delete photo*/
-exports.deletePhoto = async (req, res, next) => {
+exports.deletePhoto = async (req, res) => {
     try {
         const photoName = req.params.fileName
         const post = await Post.findById(req.params.id);

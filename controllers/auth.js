@@ -18,7 +18,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 }
 
 /**Register new user*/
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
     try {
         console.log(req.body);
         const {name, email, password} = req.body;
@@ -34,7 +34,7 @@ exports.register = async (req, res, next) => {
 }
 
 /**Login user*/
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
     try {
         const {email, password} = req.body;
 
@@ -65,7 +65,7 @@ exports.login = async (req, res, next) => {
 }
 
 /** Get current logged in user*/
-exports.getMe = async (req, res, next) => {
+exports.getMe = async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         res.status(200).json({success: true, data: user});
@@ -75,7 +75,7 @@ exports.getMe = async (req, res, next) => {
 
 }
 /**LogOut User*/
-exports.logout = async (req, res, next) => {
+exports.logout = async (req, res) => {
     try {
         res.cookie('token', 'none', {
             expires: new Date(Date.now() + 10 * 1000),
